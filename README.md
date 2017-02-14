@@ -24,5 +24,8 @@ Then configure group membership policy to run custom path policy and select what
 You will get policy chain that first will check user permission and if user has no configured group assigned then child custom path policy is fired. 
 Custom path policy checks are modified files satisfies path and starts child code review policy.
 
+Nested groups are checked too so you can define group NoCodeReview in the TFS security settings and add it to some local groups, for example officeA officeB groups. 
+Then NoCodeReview group can be used in group membership policy and developers from officeA or officeB groups will not be requested for code review at check-in.
+
 
 
