@@ -26,7 +26,7 @@ namespace CustomGroupMembershipPolicyTests
 			Trace.Listeners.Add(new ConsoleTraceListener());
 		}
 
-		public const string tfsCollectionName = @"http://quid12vttfs13:8080/tfs/SecondCollection";
+		public const string tfsCollectionName = @"http://TestTfsNameHere:8080/tfs/SecondCollection";
 
 		[Test]
 		public void CheckWorkspaceOwner()
