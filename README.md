@@ -11,9 +11,9 @@ Please find sample flow described below:
 ProjectFoo contains files that can be modified only by certain developers group without code review. But ProjectLocal can be modified by any developer from the team wihtout code review.
 To parameterize this you can do the following:
 
-*install custom checkin policy [ColinsALMCornerCheckinPolicies 2015](https://visualstudiogallery.msdn.microsoft.com/045730ee-63c0-498e-b972-42b05a2d0857)
-*install [TFS power tools vs2015](https://marketplace.visualstudio.com/items?itemName=TFSPowerToolsTeam.MicrosoftVisualStudioTeamFoundationServer2015Power). You have to install only custom policy pack for custom path checkin policy
-*install GroupMembershipPolicy
+* install custom checkin policy [ColinsALMCornerCheckinPolicies 2015](https://visualstudiogallery.msdn.microsoft.com/045730ee-63c0-498e-b972-42b05a2d0857)
+* install [TFS power tools vs2015](https://marketplace.visualstudio.com/items?itemName=TFSPowerToolsTeam.MicrosoftVisualStudioTeamFoundationServer2015Power). You have to install only custom policy pack for custom path checkin policy
+* install GroupMembershipPolicy
 
 Configure custom path policy to run code review policy and add 
 `ProjectFoo(?!.*AssemblyInfo\.cs).*`
