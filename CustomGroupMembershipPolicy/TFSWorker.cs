@@ -5,6 +5,7 @@ using Microsoft.TeamFoundation.VersionControl.Client;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,9 +23,20 @@ namespace CustomGroupMembershipPolicy
 
 		protected virtual IEnumerable<PolicyRaw> GetPoliciesRaw()
 		{
-			return _project.GetCheckinPolicies()
-				.Where(_ => _.Policy.GetType() != typeof(CustomGroupMembershipPolicy))
-				.Select(_ => new PolicyRaw(_.Policy, _.Enabled));
+			var policies = _project.GetCheckinPolicies();
+			var res = new Collection<PolicyRaw>();
+			foreach (var p in policies)
+				try
+				{
+					var policyType = p.Policy.GetType();
+					if (policyType != typeof(CustomGroupMembershipPolicy))
+						res.Add(new PolicyRaw(p.Policy, p.Enabled));
+				}
+				catch (Exception e)
+				{
+					throw new ApplicationException(string.Format("failed to load policy '{0}'", p.Type), e);
+				}
+			return res;
 		}
 
 		protected class PolicyRaw
@@ -107,7 +119,6 @@ namespace CustomGroupMembershipPolicy
 			var available = GetPolicies();
 
 			var old = settings.ToArray();
-
 
 			var actual = from a in available
 						 join s in settings.ToArray() on a equals s

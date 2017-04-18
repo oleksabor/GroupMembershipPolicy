@@ -6,12 +6,19 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CustomGroupMembershipPolicy
 {
 	[Serializable]
 	public sealed class CustomGroupMembershipPolicy : PolicyBase
     {
+
+		public CustomGroupMembershipPolicy()
+		{
+			_logger = new Logger();
+		}
+
 		public override string Description
 		{
 			get { return "User permission group filter policy"; }
@@ -31,6 +38,8 @@ namespace CustomGroupMembershipPolicy
 		private IPendingCheckin _pendingCheckin;
 		[NonSerialized]
 		public TFSWorker _worker;
+		[NonSerialized]
+		ILogger _logger;
 
 		public override void Initialize(IPendingCheckin pendingCheckin)
 		{
@@ -68,22 +77,30 @@ namespace CustomGroupMembershipPolicy
 			if (Settings == null)
 				Settings = new MembershipSettings();
 			var w = new TFSWorker(policyEditArgs.TeamProject);
-			var groups = w.MatchGroup(Settings.Groups);
-			var childrenPolicy = w.MatchPolicy(Settings.ChildrenPolicy);
-
-			using (var editorForm = new GroupMembershipPolicyForm(groups, childrenPolicy))
+			try
 			{
-				var res = editorForm.ShowDialog(policyEditArgs.Parent) == System.Windows.Forms.DialogResult.OK;
-				if (res)
-				{
-					Settings.ChildrenPolicy = childrenPolicy.Where(_ => _.IsSelected).ToList();
-					Settings.Groups = groups.Where(_ => _.IsSelected).ToList();
+				var groups = w.MatchGroup(Settings.Groups);
+				var childrenPolicy = w.MatchPolicy(Settings.ChildrenPolicy);
 
-					//var pstr = string.Join(";", Settings.ChildrenPolicy.Select(_ => _.DisplayName).ToArray());
-					//var gstr = string.Join(";", Settings.Groups.Select(_ => _.DisplayName).ToArray());
-					//System.Windows.Forms.MessageBox.Show(string.Format("child policy\r\n{0}\r\ngroups allowed\r\n{1}", pstr, gstr));
+				using (var editorForm = new GroupMembershipPolicyForm(groups, childrenPolicy))
+				{
+					var res = editorForm.ShowDialog(policyEditArgs.Parent) == System.Windows.Forms.DialogResult.OK;
+					if (res)
+					{
+						Settings.ChildrenPolicy = childrenPolicy.Where(_ => _.IsSelected).ToList();
+						Settings.Groups = groups.Where(_ => _.IsSelected).ToList();
+
+						//var pstr = string.Join(";", Settings.ChildrenPolicy.Select(_ => _.DisplayName).ToArray());
+						//var gstr = string.Join(";", Settings.Groups.Select(_ => _.DisplayName).ToArray());
+						//System.Windows.Forms.MessageBox.Show(string.Format("child policy\r\n{0}\r\ngroups allowed\r\n{1}", pstr, gstr));
+					}
+					return res;
 				}
-				return res;
+			}
+			catch (Exception e)
+			{
+				_logger.Error(e);
+				throw new ApplicationException("failed to show configuration", e);
 			}
 		}
 

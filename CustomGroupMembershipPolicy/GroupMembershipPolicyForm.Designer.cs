@@ -42,6 +42,7 @@
 			this.bCancel = new System.Windows.Forms.Button();
 			this.bOk = new System.Windows.Forms.Button();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.lPolicy = new System.Windows.Forms.Label();
 			this.gbGroups.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.gvGroups)).BeginInit();
 			this.gbChildrenPolicies.SuspendLayout();
@@ -56,6 +57,7 @@
 			// gbGroups
 			// 
 			this.gbGroups.Controls.Add(this.gvGroups);
+			this.gbGroups.Controls.Add(this.lPolicy);
 			this.gbGroups.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gbGroups.Location = new System.Drawing.Point(0, 0);
 			this.gbGroups.Name = "gbGroups";
@@ -74,12 +76,12 @@
             this.colGroupChecked,
             this.colGroupName});
 			this.gvGroups.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.gvGroups.Location = new System.Drawing.Point(3, 16);
+			this.gvGroups.Location = new System.Drawing.Point(3, 29);
 			this.gvGroups.MultiSelect = false;
 			this.gvGroups.Name = "gvGroups";
 			this.gvGroups.RowHeadersVisible = false;
 			this.gvGroups.ShowEditingIcon = false;
-			this.gvGroups.Size = new System.Drawing.Size(532, 161);
+			this.gvGroups.Size = new System.Drawing.Size(532, 148);
 			this.gvGroups.TabIndex = 1;
 			// 
 			// colGroupChecked
@@ -195,6 +197,15 @@
 			this.splitContainer1.SplitterDistance = 180;
 			this.splitContainer1.TabIndex = 6;
 			// 
+			// lPolicy
+			// 
+			this.lPolicy.Dock = System.Windows.Forms.DockStyle.Top;
+			this.lPolicy.Location = new System.Drawing.Point(3, 16);
+			this.lPolicy.Name = "lPolicy";
+			this.lPolicy.Size = new System.Drawing.Size(532, 13);
+			this.lPolicy.TabIndex = 2;
+			this.lPolicy.Text = "Please select a group that will not cause child policy to be activated";
+			// 
 			// GroupMembershipPolicyForm
 			// 
 			this.AcceptButton = this.bOk;
@@ -235,5 +246,6 @@
 		private System.Windows.Forms.DataGridViewCheckBoxColumn colEnabled;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn colGroupChecked;
 		private System.Windows.Forms.DataGridViewTextBoxColumn colGroupName;
+		private System.Windows.Forms.Label lPolicy;
 	}
 }
